@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: tp04
+  labels:
+    app: echo
+    toto: tata
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      toto: tutu
+  template:
+    metadata:
+      labels:
+        toto: tutu
+    spec:
+      containers:
+      - name: tp04
+        image: registry.cluster.wik.cloud/public/echo
+        ports:
+        - containerPort: 8080

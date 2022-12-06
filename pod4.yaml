@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: tp04-service
+  namespace: default
+spec:
+  selector:
+    toto: tutu
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 8080
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tp04
+  namespace: default
+  labels:
+    app: tp04
+
+spec:
+  replicas: 4
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 50%
+
+  selector:
+    matchLabels:
+      toto: tutu
+  template:
+    metadata:
+      labels:
+        toto: tutu
+    spec:
+
+      containers:
+      - name: tp04
+        image: registry.cluster.wik.cloud/public/echo
+        ports:
+        - containerPort: 8080
+        resources:
+          requests:
+            cpu: 60m
+            memory: 50Mi
+          limits:
+            cpu: 60m
+            memory: 50Mi
